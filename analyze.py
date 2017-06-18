@@ -12,17 +12,15 @@ import config
 import learn
 
 import osc
+import NeighborAlgorithm as na
 
-MODE = input("mode > ")
-stream = input("is stream > ")
-file_type = input("3 input sensors or 4 > ")
-config.interval = input("inverval > ")
-ver = input("version > ")
+config.learner = input("learner > ")
+config.stream = input("is stream > ")
+config.ver = input("version > ")
 
 def keys():
     while True:
-        print("input mode")
-        input_word = input(">")
+        input_word = input()
         if input_word == "s":
             sys.exit()
         elif input_word == "o":
@@ -41,12 +39,14 @@ def osc_loop():
       type=int, default=8082, help="The port to listen on")
     args = parser.parse_args()
 
-    learner = learn.Arrange()
-    learner.make_dir_train_or_test()
+    #if config.learner == "na":
+    if config.learner != "na":
+        return None
+
+    config.fitted_data = na.setup()
 
     _dispatcher = dispatcher.Dispatcher()
-    _dispatcher.map("/found", osc.set_found)
-    _dispatcher.map("/raw", learner.fetch_numbers)
+    _dispatcher.map("/raw", na.stream)
 
     server = osc_server.ThreadingOSCUDPServer(
       (args.ip, args.port), _dispatcher)
@@ -54,10 +54,12 @@ def osc_loop():
     server.serve_forever()
 
 
-if stream == "s":
+if config.stream == "s":
     th = threading.Thread(target=osc_loop,name="th",args=())
     th.setDaemon(True)
     th.start()
+else:
+    na.setup()
 
 if __name__ == "__main__":
     keys()

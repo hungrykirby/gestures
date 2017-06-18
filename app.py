@@ -18,8 +18,8 @@ config.is_new = input("is_new > ")
 
 def keys():
     while True:
-        print("input mode")
-        input_word = input(">")
+        #print("input mode")
+        input_word = input()
         if input_word == "s":
             sys.exit()
         elif input_word == "o":

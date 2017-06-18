@@ -3,24 +3,20 @@ import glob
 import numpy as np
 import config
 
-def read_ceps(file_type, ver, base_dir = os.getcwd()):
+def read_ceps():
+    base_dir = os.getcwd()
     train_x, train_y = [], []
     test_x, test_y = [], []
-    if file_type == "3":
-        file_type = ""
-    elif file_type == "4":
-        file_type = "_4"
-        if config.interval == "i":
-            file_type = "_suc"
-    base_dir = base_dir.replace("realtime_analyze", "pyduino" + file_type)
-    train_x, train_y =  make_arr(base_dir, "train" + ver)
-    test_x, test_y = make_arr(base_dir, "test" + ver)
+    train_x, train_y =  make_arr("train" + config.ver)
+    test_x, test_y = make_arr("test" + config.ver)
     return train_x, train_y, test_x, test_y
 
-def make_arr(base_dir, mode):
+def make_arr(mode):
     x, y = [], []
-    name_list = make_namelist(base_dir, mode)
+    base_dir = os.getcwd()
+    name_list = make_namelist()
     for label,name in enumerate(name_list):
+        print(os.path.join(base_dir, mode, name))
         for fn in glob.glob(os.path.join(base_dir, mode, name, "*.ceps.npy")):
             ceps = np.load(fn)
             print(mode, label, ceps, fn)
@@ -29,7 +25,9 @@ def make_arr(base_dir, mode):
             y.append(label)
     return np.array(x),np.array(y)
 
-def make_namelist(base_dir, mode):
+def make_namelist():
+    base_dir = os.getcwd()
+    mode = config.mode
     name_list = []
     folders = os.listdir(os.path.join(base_dir, mode))
     for f in folders:

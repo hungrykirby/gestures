@@ -11,7 +11,7 @@ class Arrange:
     ax = None
     plots_numbers = []
     count = 0
-    pattern = {"train": 100, "test":30, "raw": 1000}
+    pattern = {"train": 10, "test":3, "raw": 1000}
 
     count_calibration = 0
     FRAMES_CALIBRATION = 5
@@ -82,7 +82,7 @@ class Arrange:
         if self.count < self.pattern[self.MODE]:
             input_array = np.array(raw_list).astype(np.int64) - self.calibration_numbers
             if config.c != "1025":
-                self.write_ceps(raw_list)
+                self.write_ceps(input_array, c)
                 print("Calibration Mode is ", is_calibration, ":input array = ", input_array, ":MODE = ", self.MODE)
             else:
                 print(input_array)
