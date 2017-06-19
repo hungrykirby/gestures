@@ -19,3 +19,5 @@ count_calibration = 0
 is_calibration = False
 
 fitted_data = None
+
+face_expression = ["normal", "happy", "angry", "suprised", "sad", "others"]

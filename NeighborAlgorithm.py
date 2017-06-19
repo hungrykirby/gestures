@@ -67,4 +67,4 @@ def stream(unused_addr, *raws):
     '''
 
     predict_label = np.argmin(dist)
-    print("predict_label", predict_label)
+    print("predict_label", predict_label, config.face_expression[predict_label])
